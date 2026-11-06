@@ -110,3 +110,13 @@ def split_heads(x, num_heads):
 
     return x
 
+# Step 15 - merge_heads
+import numpy as np
+
+def merge_heads(x):
+    B, num_heads, T, head_dim = x.shape
+    d_model = num_heads * head_dim
+    x = np.swapaxes(x, 1, 2)
+
+    return x.reshape(B, T, d_model)
+

@@ -24,6 +24,7 @@ python scaffold.py
 - [x] **12.** softmax_attention_weights
 - [x] **13.** attention_context
 - [x] **14.** split_heads
+- [x] **15.** merge_heads
 
 ---
 
