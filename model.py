@@ -152,3 +152,10 @@ def multi_head_scaled_dot_product_attention(q, k, v, num_heads):
 
     return attention_context(attention_weights, vh)
 
+# Step 18 - merge_and_output_project
+import numpy as np
+
+def merge_and_output_project(head_context, w_o, b_o):
+    context = merge_heads(head_context)
+    return linear_projection(context, w_o, b_o)
+

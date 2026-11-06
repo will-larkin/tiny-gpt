@@ -27,6 +27,7 @@ python scaffold.py
 - [x] **15.** merge_heads
 - [x] **16.** project_qkv
 - [x] **17.** multi_head_scaled_dot_product_attention
+- [x] **18.** merge_and_output_project
 
 ---
 
