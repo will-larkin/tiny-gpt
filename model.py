@@ -70,3 +70,9 @@ def linear_projection(x, weight, bias):
 def compute_attention_scores(q, k):
     return q @ np.matrix_transpose(k)
 
+# Step 10 - scale_attention_scores
+import numpy as np
+
+def scale_attention_scores(scores, head_dim):
+    return scores / np.sqrt(head_dim)
+

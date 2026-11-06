@@ -19,6 +19,7 @@ python scaffold.py
 - [x] **7.** add_positional_embeddings
 - [x] **8.** linear_projection
 - [x] **9.** compute_attention_scores
+- [x] **10.** scale_attention_scores
 
 ---
 
