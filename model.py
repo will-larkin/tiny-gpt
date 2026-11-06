@@ -76,3 +76,11 @@ import numpy as np
 def scale_attention_scores(scores, head_dim):
     return scores / np.sqrt(head_dim)
 
+# Step 11 - apply_causal_mask
+import numpy as np
+
+def apply_causal_mask(scores):
+    causal_mask = np.tril(np.ones_like(scores, dtype=bool))
+
+    return np.where(causal_mask, scores, -np.inf)
+
