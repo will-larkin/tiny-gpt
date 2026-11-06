@@ -40,7 +40,6 @@ def make_batches(data, batch_size, block_size, rng):
 
 # Step 6 - token_embedding_lookup
 def token_embedding_lookup(token_ids, embedding_table):
-    # TODO: return embedding vectors for each token id, output shape (B, T, d_model)
     d_model = embedding_table.shape[1]
     b, t = token_ids.shape
     embeddings = embedding_table[token_ids]
