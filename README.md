@@ -16,6 +16,7 @@ python scaffold.py
 - [x] **4.** decode_ids
 - [x] **5.** make_batches
 - [x] **6.** token_embedding_lookup
+- [x] **7.** add_positional_embeddings
 
 ---
 

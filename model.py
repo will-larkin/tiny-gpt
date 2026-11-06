@@ -47,3 +47,12 @@ def token_embedding_lookup(token_ids, embedding_table):
 
     return embeddings.reshape(b, t, d_model)
 
+# Step 7 - add_positional_embeddings
+import numpy as np
+
+def add_positional_embeddings(token_embeds, pos_embedding_table):
+    # TODO: add learned positional embeddings (sliced to length T) to token embeddings
+    t = token_embeds.shape[1]
+    sliced_embedding_table = pos_embedding_table[:t, :]
+    return token_embeds + sliced_embedding_table
+
