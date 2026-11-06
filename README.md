@@ -23,6 +23,7 @@ python scaffold.py
 - [x] **11.** apply_causal_mask
 - [x] **12.** softmax_attention_weights
 - [x] **13.** attention_context
+- [x] **14.** split_heads
 
 ---
 
