@@ -66,3 +66,7 @@ def linear_projection(x, weight, bias):
 
     return projection
 
+# Step 9 - compute_attention_scores
+def compute_attention_scores(q, k):
+    return q @ np.matrix_transpose(k)
+
