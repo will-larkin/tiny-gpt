@@ -55,3 +55,14 @@ def add_positional_embeddings(token_embeds, pos_embedding_table):
     sliced_embedding_table = pos_embedding_table[:t]
     return token_embeds + sliced_embedding_table
 
+# Step 8 - linear_projection
+import numpy as np
+
+def linear_projection(x, weight, bias):
+    projection = x @ weight
+
+    if bias is not None:
+        projection = projection + bias
+
+    return projection
+

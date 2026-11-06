@@ -17,6 +17,7 @@ python scaffold.py
 - [x] **5.** make_batches
 - [x] **6.** token_embedding_lookup
 - [x] **7.** add_positional_embeddings
+- [x] **8.** linear_projection
 
 ---
 
