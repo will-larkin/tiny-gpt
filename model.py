@@ -128,3 +128,27 @@ def project_qkv(x, w_q, b_q, w_k, b_k, w_v, b_v):
 
     return Q, K, V
 
+# Step 17 - multi_head_scaled_dot_product_attention
+import numpy as np
+
+def multi_head_scaled_dot_product_attention(q, k, v, num_heads):
+    """Run masked scaled dot-product attention in parallel across num_heads.
+
+    q, k, v: arrays of shape (B, T, d_model).
+    Returns: per-head context of shape (B, num_heads, T, head_dim).
+    """
+    B, T, d_model = q.shape
+    head_dim = d_model // num_heads
+
+    qh = split_heads(q, num_heads)
+    kh = split_heads(k, num_heads)
+    vh = split_heads(v, num_heads)
+
+    attention_scores = compute_attention_scores(qh, kh)
+
+    scaled_scores = scale_attention_scores(attention_scores, head_dim)
+    masked_scores = apply_causal_mask(scaled_scores)
+    attention_weights = softmax_attention_weights(masked_scores)
+
+    return attention_context(attention_weights, vh)
+
