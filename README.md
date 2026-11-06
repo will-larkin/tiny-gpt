@@ -21,6 +21,7 @@ python scaffold.py
 - [x] **9.** compute_attention_scores
 - [x] **10.** scale_attention_scores
 - [x] **11.** apply_causal_mask
+- [x] **12.** softmax_attention_weights
 
 ---
 
