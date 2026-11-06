@@ -120,3 +120,11 @@ def merge_heads(x):
 
     return x.reshape(B, T, d_model)
 
+# Step 16 - project_qkv
+def project_qkv(x, w_q, b_q, w_k, b_k, w_v, b_v):
+    Q = linear_projection(x, w_q, b_q)
+    K = linear_projection(x, w_k, b_k)
+    V = linear_projection(x, w_v, b_v)
+
+    return Q, K, V
+
