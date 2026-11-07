@@ -220,3 +220,23 @@ import numpy as np
 def pre_norm_residual_sublayer(x, gamma, beta, sublayer_fn):
     return x + sublayer_fn(layer_norm(x, gamma, beta))
 
+# Step 27 - transformer_block
+def transformer_block(x, params, num_heads):
+    """One transformer block: pre-norm attention sublayer then pre-norm FFN sublayer."""
+    x = pre_norm_residual_sublayer(
+        x,
+        params['ln1_gamma'],
+        params['ln1_beta'],
+        lambda normed_x: masked_multi_head_self_attention(
+            normed_x, params['attn'], num_heads
+        ))
+
+    x = pre_norm_residual_sublayer(
+        x,
+        params['ln2_gamma'],
+        params['ln2_beta'],
+        lambda normed_x: position_wise_feed_forward(
+            normed_x, params['ffn']
+        ))
+    return x
+

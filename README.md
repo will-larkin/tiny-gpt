@@ -36,6 +36,7 @@ python scaffold.py
 - [x] **24.** layernorm_stats
 - [x] **25.** layer_norm
 - [x] **26.** pre_norm_residual_sublayer
+- [x] **27.** transformer_block
 
 ---
 
