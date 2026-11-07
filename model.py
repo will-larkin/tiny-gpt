@@ -179,3 +179,11 @@ def gelu_activation(x):
     u = np.sqrt(2 / np.pi) * (x + x_cubed_constant)
     return (x / 2) * (1 + np.tanh(u))
 
+# Step 21 - ffn_first_layer
+import numpy as np
+
+def ffn_first_layer(x, w1, b1):
+    x_projection = linear_projection(x, w1, b1)
+    x_activated = gelu_activation(x_projection)
+    return x_activated
+
