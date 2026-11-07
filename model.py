@@ -170,3 +170,12 @@ def masked_multi_head_self_attention(x, params, num_heads):
 
     return context
 
+# Step 20 - gelu_activation
+import numpy as np
+
+def gelu_activation(x):
+    """Apply tanh-approximate GELU elementwise. Return array of same shape."""
+    x_cubed_constant = 0.044715 * x**3
+    u = np.sqrt(2 / np.pi) * (x + x_cubed_constant)
+    return (x / 2) * (1 + np.tanh(u))
+
