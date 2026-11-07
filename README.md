@@ -35,6 +35,7 @@ python scaffold.py
 - [x] **23.** position_wise_feed_forward
 - [x] **24.** layernorm_stats
 - [x] **25.** layer_norm
+- [x] **26.** pre_norm_residual_sublayer
 
 ---
 
