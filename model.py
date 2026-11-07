@@ -207,3 +207,10 @@ def layernorm_stats(x, eps=1e-5):
     variance = x.var(axis=-1, keepdims=True)
     return mean, variance
 
+# Step 25 - layer_norm
+def layer_norm(x, gamma, beta, eps=1e-5):
+    mean, variance = layernorm_stats(x, eps)
+    x_hat = (x - mean) / np.sqrt(variance + eps)
+    
+    return gamma * x_hat + beta
+
