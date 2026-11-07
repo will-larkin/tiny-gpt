@@ -201,3 +201,9 @@ def position_wise_feed_forward(x, params):
     ff2 = ffn_second_layer(ff1, params['w2'], params['b2'])
     return ff2
 
+# Step 24 - layernorm_stats
+def layernorm_stats(x, eps=1e-5):
+    mean = x.mean(axis=-1, keepdims=True)
+    variance = x.var(axis=-1, keepdims=True)
+    return mean, variance
+
