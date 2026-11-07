@@ -240,3 +240,11 @@ def transformer_block(x, params, num_heads):
         ))
     return x
 
+# Step 28 - gpt_backbone
+def gpt_backbone(x, blocks_params, num_heads):
+    # TODO: run x through each transformer block in blocks_params sequentially and return the final tensor.
+    for params in blocks_params:
+        x = transformer_block(x, params, num_heads)
+
+    return x
+

@@ -37,6 +37,7 @@ python scaffold.py
 - [x] **25.** layer_norm
 - [x] **26.** pre_norm_residual_sublayer
 - [x] **27.** transformer_block
+- [x] **28.** gpt_backbone
 
 ---
 
