@@ -187,3 +187,9 @@ def ffn_first_layer(x, w1, b1):
     x_activated = gelu_activation(x_projection)
     return x_activated
 
+# Step 22 - ffn_second_layer
+import numpy as np
+
+def ffn_second_layer(h, w2, b2):
+    return linear_projection(h, w2, b2)
+

@@ -31,6 +31,7 @@ python scaffold.py
 - [x] **19.** masked_multi_head_self_attention
 - [x] **20.** gelu_activation
 - [x] **21.** ffn_first_layer
+- [x] **22.** ffn_second_layer
 
 ---
 
