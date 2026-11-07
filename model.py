@@ -197,7 +197,6 @@ def ffn_second_layer(h, w2, b2):
 import numpy as np
 
 def position_wise_feed_forward(x, params):
-    # TODO: assemble the two-layer position-wise feed-forward network using params
     ff1 = ffn_first_layer(x, params['w1'], params['b1'])
     ff2 = ffn_second_layer(ff1, params['w2'], params['b2'])
     return ff2
