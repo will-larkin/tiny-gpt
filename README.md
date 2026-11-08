@@ -47,6 +47,7 @@ python scaffold.py
 - [x] **35.** apply_optimizer_update
 - [x] **36.** run_training_loop
 - [x] **37.** last_position_logits
+- [x] **38.** scale_logits_by_temperature
 
 ---
 
