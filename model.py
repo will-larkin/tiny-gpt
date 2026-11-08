@@ -319,3 +319,32 @@ def init_gpt_parameters(vocab_size, max_seq_len, d_model, num_heads, d_ff, num_l
         params["blocks"].append(block)
     return params
 
+# Step 33 - collect_parameters
+def collect_parameters(params):
+    def append_nested(container, collected):
+        for value in container.values():
+            if isinstance(value, dict):
+                append_nested(value, collected)
+            else:
+                collected.append(value)
+
+    collected = []
+
+    # Embeddings
+    collected.append(params["token_embedding"])
+    collected.append(params["positional_embedding"])
+
+    # Transformer blocks
+    for block in params["blocks"]:
+        append_nested(block, collected)
+
+    # Final layer norm
+    collected.append(params["ln_f_gamma"])
+    collected.append(params["ln_f_beta"])
+
+    # Output projection
+    collected.append(params["w_out"])
+    collected.append(params["b_out"])
+
+    return collected
+

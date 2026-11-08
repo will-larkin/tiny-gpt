@@ -42,6 +42,7 @@ python scaffold.py
 - [x] **30.** gpt_forward
 - [x] **31.** cross_entropy_language_modeling_loss
 - [x] **32.** init_gpt_parameters
+- [x] **33.** collect_parameters
 
 ---
 
