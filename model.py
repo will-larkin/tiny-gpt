@@ -446,3 +446,29 @@ def top_k_filter_logits(logits, k):
         np.array(-np.inf, dtype=logits.dtype),
     )
 
+# Step 40 - sample_next_token
+def sample_next_token(filtered_logits, rng):
+    filtered_logits = np.asarray(filtered_logits)
+    batch_size, vocab_size = filtered_logits.shape
+
+    finite_mask = np.isfinite(filtered_logits)
+    if not np.all(finite_mask.any(axis=1)):
+        raise ValueError("At least one row has no finite logits.")
+
+    safe_logits = np.where(finite_mask, filtered_logits, -np.inf)
+    max_logits = np.max(safe_logits, axis=1, keepdims=True)
+    exp_logits = np.exp(safe_logits - max_logits)
+    exp_logits = np.where(finite_mask, exp_logits, 0.0)
+
+    probs = exp_logits / exp_logits.sum(axis=1, keepdims=True)
+    probs = np.clip(probs, 0.0, None)
+    probs /= probs.sum(axis=1, keepdims=True)
+
+    cum_probs = np.cumsum(probs, axis=1)
+    cum_probs[:, -1] = 1.0  
+
+    u = rng.random(batch_size)
+    next_tokens = np.argmax(cum_probs >= u[:, None], axis=1)
+
+    return next_tokens.astype(np.int64)
+
