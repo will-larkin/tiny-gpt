@@ -263,3 +263,18 @@ def gpt_forward(token_ids, params, num_heads):
 
     return project_to_vocab_logits(hidden_states, params['w_out'], params['b_out'])
 
+# Step 31 - cross_entropy_language_modeling_loss
+def cross_entropy_language_modeling_loss(logits, targets):
+    shifted = logits - logits.max(axis=-1, keepdims=True)
+
+    log_probs = shifted - np.log(np.exp(shifted).sum(axis=-1, keepdims=True))
+
+    batch, seq = targets.shape
+    selected = log_probs[
+        np.arange(batch)[:, None],
+        np.arange(seq)[None, :],
+        targets,
+    ]
+
+    return float(-selected.mean())
+
