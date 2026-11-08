@@ -39,6 +39,7 @@ python scaffold.py
 - [x] **27.** transformer_block
 - [x] **28.** gpt_backbone
 - [x] **29.** project_to_vocab_logits
+- [x] **30.** gpt_forward
 
 ---
 
