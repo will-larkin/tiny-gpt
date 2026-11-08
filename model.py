@@ -257,7 +257,8 @@ def project_to_vocab_logits(hidden_states, w_out, b_out):
 # Step 30 - gpt_forward
 def gpt_forward(token_ids, params, num_heads):
     embeddings = token_embedding_lookup(token_ids, params['token_embedding'])
-    context_aware = add_positional_embeddings(embeddings, params['pos_embedding'])
+    pos_emb = params['pos_embedding'] if 'pos_embedding' in params else params['positional_embedding']
+    context_aware = add_positional_embeddings(embeddings, pos_emb)
     normed = layer_norm(context_aware, params['ln_f_gamma'], params['ln_f_beta'])
     hidden_states = gpt_backbone(normed, params['blocks'], num_heads)
 
