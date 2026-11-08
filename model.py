@@ -353,7 +353,6 @@ def collect_parameters(params):
 def training_step(params, input_ids, target_ids):
     eps = 1e-5
     num_heads = params['num_heads']
-    print(params)
 
     def compute_loss(current_params):
         logits = gpt_forward(input_ids, current_params, num_heads)
