@@ -411,3 +411,15 @@ def apply_optimizer_update(params, grads, learning_rate):
         params -= learning_rate * grads
     return params
 
+# Step 36 - run_training_loop
+def run_training_loop(params, batches, num_steps, learning_rate):
+    losses = []
+
+    for i in range(num_steps):
+        input_ids, target_ids = batches[i % len(batches)]
+        loss, grads = training_step(params, input_ids, target_ids)
+        losses.append(loss)
+        params = apply_optimizer_update(params, grads, learning_rate)
+    
+    return losses
+

@@ -45,6 +45,7 @@ python scaffold.py
 - [x] **33.** collect_parameters
 - [x] **34.** training_step
 - [x] **35.** apply_optimizer_update
+- [x] **36.** run_training_loop
 
 ---
 
