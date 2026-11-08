@@ -348,3 +348,41 @@ def collect_parameters(params):
 
     return collected
 
+# Step 34 - training_step
+def training_step(params, input_ids, target_ids):
+    eps = 1e-5
+    num_heads = params['num_heads']
+    print(params)
+
+    def compute_loss(current_params):
+        logits = gpt_forward(input_ids, current_params, num_heads)
+        return cross_entropy_language_modeling_loss(logits, target_ids)
+
+    loss = compute_loss(params)
+
+    grads = {}
+
+    for name, value in params.items():
+        if not isinstance(value, np.ndarray):
+            continue
+
+        grad = np.zeros_like(value, dtype=np.float64)
+        flat_param = value.reshape(-1)
+        flat_grad = grad.reshape(-1)
+
+        for i in range(flat_param.size):
+            original = flat_param[i]
+
+            flat_param[i] = original + eps
+            loss_plus = compute_loss(params)
+
+            flat_param[i] = original - eps
+            loss_minus = compute_loss(params)
+
+            flat_param[i] = original
+            flat_grad[i] = (loss_plus - loss_minus) / (2.0 * eps)
+
+        grads[name] = grad
+
+    return loss, grads
+
