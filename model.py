@@ -472,3 +472,28 @@ def sample_next_token(filtered_logits, rng):
 
     return next_tokens.astype(np.int64)
 
+# Step 41 - generate_text
+def generate_text(params, prompt, num_new_tokens, max_seq_len, vocab, id_to_char, temperature=1.0, top_k=None, seed=0):
+    rng = np.random.default_rng(seed)
+    num_heads = params['num_heads']
+    
+    token_ids = list(encode_text(prompt, vocab))
+    
+    for _ in range(num_new_tokens):
+        context_ids = np.asarray([token_ids[-max_seq_len:]], dtype=np.int64)
+        
+        logits = gpt_forward(context_ids, params, num_heads)
+        
+        next_logits = last_position_logits(logits)
+        
+        scaled_logits = scale_logits_by_temperature(next_logits, temperature)
+        if top_k is not None:
+            filtered_logits = top_k_filter_logits(scaled_logits, top_k)
+        else:
+            filtered_logits = scaled_logits
+            
+        next_id = sample_next_token(filtered_logits, rng)
+        token_ids.append(int(np.asarray(next_id).item()))
+        
+    return decode_ids(token_ids, id_to_char)
+
