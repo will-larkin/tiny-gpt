@@ -386,3 +386,28 @@ def training_step(params, input_ids, target_ids):
 
     return loss, grads
 
+# Step 35 - apply_optimizer_update
+def apply_optimizer_update(params, grads, learning_rate):
+    if isinstance(params, dict) and isinstance(grads, dict):
+        for key, param in params.items():
+            if key not in grads:
+                continue
+            grad = grads[key]
+            if isinstance(param, (dict, list, tuple)):
+                apply_optimizer_update(param, grad, learning_rate)
+            elif isinstance(param, np.ndarray):
+                param -= learning_rate * grad
+            elif isinstance(param, (int, float, np.number)) and grad is not None:
+                params[key] = param - learning_rate * grad
+    elif isinstance(params, (list, tuple)) and isinstance(grads, (list, tuple)):
+        for i, (param, grad) in enumerate(zip(params, grads)):
+            if isinstance(param, (dict, list, tuple)):
+                apply_optimizer_update(param, grad, learning_rate)
+            elif isinstance(param, np.ndarray):
+                param -= learning_rate * grad
+            elif isinstance(param, (int, float, np.number)) and grad is not None and isinstance(params, list):
+                params[i] = param - learning_rate * grad
+    elif isinstance(params, np.ndarray) and isinstance(grads, np.ndarray):
+        params -= learning_rate * grads
+    return params
+

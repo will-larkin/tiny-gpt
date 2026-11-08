@@ -44,6 +44,7 @@ python scaffold.py
 - [x] **32.** init_gpt_parameters
 - [x] **33.** collect_parameters
 - [x] **34.** training_step
+- [x] **35.** apply_optimizer_update
 
 ---
 
