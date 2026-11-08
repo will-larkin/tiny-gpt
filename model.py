@@ -278,3 +278,44 @@ def cross_entropy_language_modeling_loss(logits, targets):
 
     return float(-selected.mean())
 
+# Step 32 - init_gpt_parameters
+def init_gpt_parameters(vocab_size, max_seq_len, d_model, num_heads, d_ff, num_layers, seed=0):
+    rng = np.random.default_rng(seed)
+    std = 0.02
+    params = {
+        "token_embedding": rng.normal(0.0, std, size=(vocab_size, d_model)),
+        "positional_embedding": rng.normal(
+            0.0, std, size=(max_seq_len, d_model)
+        ),
+        "blocks": [],
+        "ln_f_gamma": np.ones((d_model,)),
+        "ln_f_beta": np.zeros((d_model,)),
+        "w_out": rng.normal(0.0, std, size=(d_model, vocab_size)),
+        "b_out": np.zeros((vocab_size,)),
+    }
+    for _ in range(num_layers):
+        block = {
+            "ln1_gamma": np.ones((d_model,)),
+            "ln1_beta": np.zeros((d_model,)),
+            "attn": {
+                "w_q": rng.normal(0.0, std, size=(d_model, d_model)),
+                "b_q": np.zeros((d_model,)),
+                "w_k": rng.normal(0.0, std, size=(d_model, d_model)),
+                "b_k": np.zeros((d_model,)),
+                "w_v": rng.normal(0.0, std, size=(d_model, d_model)),
+                "b_v": np.zeros((d_model,)),
+                "w_o": rng.normal(0.0, std, size=(d_model, d_model)),
+                "b_o": np.zeros((d_model,)),
+            },
+            "ln2_gamma": np.ones((d_model,)),
+            "ln2_beta": np.zeros((d_model,)),
+            "ffn": {
+                "w1": rng.normal(0.0, std, size=(d_model, d_ff)),
+                "b1": np.zeros((d_ff,)),
+                "w2": rng.normal(0.0, std, size=(d_ff, d_model)),
+                "b2": np.zeros((d_model,)),
+            },
+        }
+        params["blocks"].append(block)
+    return params
+
