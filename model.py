@@ -431,3 +431,18 @@ def last_position_logits(logits):
 def scale_logits_by_temperature(logits, temperature):
     return logits / temperature
 
+# Step 39 - top_k_filter_logits
+def top_k_filter_logits(logits, k):
+    vocab_size = logits.shape[-1]
+
+    if k >= vocab_size:
+        return logits
+
+    kth_largest = np.partition(logits, -k, axis=-1)[:, -k, None]
+
+    return np.where(
+        logits >= kth_largest,
+        logits,
+        np.array(-np.inf, dtype=logits.dtype),
+    )
+
