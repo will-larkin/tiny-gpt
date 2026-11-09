@@ -1,18 +1,25 @@
 [project]
 name = "tiny-gpt"
 version = "0.1.0"
-description = "Add your description here"
+description = "A modern, minimal GPT language model in PyTorch"
 readme = "README.md"
 authors = [
     { name = "william larkin", email = "56956489+will-larkin@users.noreply.github.com" }
 ]
-requires-python = ">=3.14"
+requires-python = ">=3.12,<3.13"
 dependencies = [
-    "numpy>=2.5.4",
+    "torch>=2.2.0",
+    "tiktoken>=0.7.0",
+    "numpy>=1.26.0",
 ]
 
 [project.scripts]
-tiny-gpt = "tiny_gpt:main"
+tiny-gpt = "tiny_gpt.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+]
 
 [build-system]
 requires = ["uv_build>=0.12.5,<0.13.0"]
