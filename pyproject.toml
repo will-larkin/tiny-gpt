@@ -1,0 +1,19 @@
+[project]
+name = "tiny-gpt"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "william larkin", email = "56956489+will-larkin@users.noreply.github.com" }
+]
+requires-python = ">=3.14"
+dependencies = [
+    "numpy>=2.5.4",
+]
+
+[project.scripts]
+tiny-gpt = "tiny_gpt:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"

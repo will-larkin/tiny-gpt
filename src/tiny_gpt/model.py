@@ -259,10 +259,10 @@ def gpt_forward(token_ids, params, num_heads):
     embeddings = token_embedding_lookup(token_ids, params['token_embedding'])
     pos_emb = params['pos_embedding'] if 'pos_embedding' in params else params['positional_embedding']
     context_aware = add_positional_embeddings(embeddings, pos_emb)
-    normed = layer_norm(context_aware, params['ln_f_gamma'], params['ln_f_beta'])
-    hidden_states = gpt_backbone(normed, params['blocks'], num_heads)
+    hidden_states = gpt_backbone(context_aware, params['blocks'], num_heads)
+    normed = layer_norm(hidden_states, params['ln_f_gamma'], params['ln_f_beta'])
 
-    return project_to_vocab_logits(hidden_states, params['w_out'], params['b_out'])
+    return project_to_vocab_logits(normed, params['w_out'], params['b_out'])
 
 # Step 31 - cross_entropy_language_modeling_loss
 def cross_entropy_language_modeling_loss(logits, targets):
@@ -360,29 +360,38 @@ def training_step(params, input_ids, target_ids):
 
     loss = compute_loss(params)
 
-    grads = {}
+    def compute_grads(node):
+        if isinstance(node, np.ndarray):
+            grad = np.zeros_like(node, dtype=np.float64)
+            flat_param = node.reshape(-1)
+            flat_grad = grad.reshape(-1)
 
-    for name, value in params.items():
-        if not isinstance(value, np.ndarray):
-            continue
+            for i in range(flat_param.size):
+                original = flat_param[i]
 
-        grad = np.zeros_like(value, dtype=np.float64)
-        flat_param = value.reshape(-1)
-        flat_grad = grad.reshape(-1)
+                flat_param[i] = original + eps
+                loss_plus = compute_loss(params)
 
-        for i in range(flat_param.size):
-            original = flat_param[i]
+                flat_param[i] = original - eps
+                loss_minus = compute_loss(params)
 
-            flat_param[i] = original + eps
-            loss_plus = compute_loss(params)
+                flat_param[i] = original
+                flat_grad[i] = (loss_plus - loss_minus) / (2.0 * eps)
 
-            flat_param[i] = original - eps
-            loss_minus = compute_loss(params)
+            return grad
+        elif isinstance(node, dict):
+            return {
+                name: compute_grads(value)
+                for name, value in node.items()
+                if isinstance(value, (np.ndarray, dict, list, tuple))
+            }
+        elif isinstance(node, list):
+            return [compute_grads(item) for item in node]
+        elif isinstance(node, tuple):
+            return tuple(compute_grads(item) for item in node)
+        return None
 
-            flat_param[i] = original
-            flat_grad[i] = (loss_plus - loss_minus) / (2.0 * eps)
-
-        grads[name] = grad
+    grads = compute_grads(params)
 
     return loss, grads
 

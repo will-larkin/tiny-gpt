@@ -1,60 +1,19 @@
-"""
-Tiny GPT From Scratch scaffold.
-
-Run this with: python scaffold.py
-Uses functions defined in model.py.
-"""
-
-from model import *  # noqa: F401, F403 (pulls in your solution functions)
-
 """Tiny GPT from Scratch in NumPy — end-to-end demo scaffold."""
-
 import numpy as np
 
-from solution import (
+from tiny_gpt.model import (
     build_char_vocab,
     build_id_to_char,
     encode_text,
     decode_ids,
-    make_batches,
-    token_embedding_lookup,
-    add_positional_embeddings,
-    linear_projection,
-    compute_attention_scores,
-    scale_attention_scores,
-    apply_causal_mask,
-    softmax_attention_weights,
-    attention_context,
-    split_heads,
-    merge_heads,
-    project_qkv,
-    multi_head_scaled_dot_product_attention,
-    merge_and_output_project,
-    masked_multi_head_self_attention,
-    gelu_activation,
-    ffn_first_layer,
-    ffn_second_layer,
-    position_wise_feed_forward,
-    layernorm_stats,
-    layer_norm,
-    pre_norm_residual_sublayer,
-    transformer_block,
-    gpt_backbone,
-    project_to_vocab_logits,
-    gpt_forward,
-    cross_entropy_language_modeling_loss,
     init_gpt_parameters,
     collect_parameters,
-    training_step,
-    apply_optimizer_update,
+    make_batches,
+    gpt_forward,
+    cross_entropy_language_modeling_loss,
     run_training_loop,
-    last_position_logits,
-    scale_logits_by_temperature,
-    top_k_filter_logits,
-    sample_next_token,
     generate_text,
 )
-
 
 def main():
     np.random.seed(0)
