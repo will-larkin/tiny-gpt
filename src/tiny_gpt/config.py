@@ -14,3 +14,4 @@ class GPTConfig:
     d_ff: int = 64
     num_layers: int = 2
     dropout: float = 0.0
+    norm_eps: float = 1e-5

@@ -7,6 +7,7 @@ from tiny_gpt.model import (
     FeedForward,
     TransformerBlock,
     TinyGPT,
+    RMSNorm,
     make_batches,
 )
 
@@ -32,6 +33,7 @@ def test_modular_imports():
     from tiny_gpt.block import FeedForward as SubFFN, TransformerBlock as SubBlock
     from tiny_gpt.data import make_batches as sub_make_batches
     from tiny_gpt.model import TinyGPT as SubGPT
+    from tiny_gpt.norm import RMSNorm as SubNorm
 
     assert SubConfig is GPTConfig
     assert SubTokenizer is CharTokenizer
@@ -40,6 +42,31 @@ def test_modular_imports():
     assert SubBlock is TransformerBlock
     assert sub_make_batches is make_batches
     assert SubGPT is TinyGPT
+    assert SubNorm is RMSNorm
+
+
+def test_rmsnorm():
+    from tiny_gpt.norm import RMSNorm
+
+    norm = RMSNorm(dim=32)
+    x = torch.randn(2, 4, 32) * 5.0  # arbitrary scale
+    out = norm(x)
+    assert out.shape == (2, 4, 32)
+    # Check that root-mean-square of out across feature dim is ~1.0
+    rms = torch.sqrt(out.pow(2).mean(-1))
+    assert torch.allclose(rms, torch.ones_like(rms), atol=1e-3)
+
+
+def test_rmsnorm_mixed_precision():
+    from tiny_gpt.norm import RMSNorm
+
+    norm = RMSNorm(dim=32).half()
+    x_fp16 = (torch.randn(2, 4, 32) * 5.0).half()
+    out_fp16 = norm(x_fp16)
+    assert out_fp16.dtype == torch.float16
+    assert out_fp16.shape == (2, 4, 32)
+    rms = torch.sqrt(out_fp16.float().pow(2).mean(-1))
+    assert torch.allclose(rms, torch.ones_like(rms), atol=1e-3)
 
 
 def test_causal_self_attention_shape():

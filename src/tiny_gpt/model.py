@@ -11,6 +11,7 @@ from tiny_gpt.attention import CausalSelfAttention
 from tiny_gpt.block import FeedForward, TransformerBlock
 from tiny_gpt.config import GPTConfig
 from tiny_gpt.data import make_batches
+from tiny_gpt.norm import RMSNorm
 from tiny_gpt.tokenizer import CharTokenizer
 
 
@@ -26,7 +27,7 @@ class TinyGPT(nn.Module):
         self.drop = nn.Dropout(config.dropout)
 
         self.blocks = nn.ModuleList([TransformerBlock(config) for _ in range(config.num_layers)])
-        self.ln_f = nn.LayerNorm(config.d_model)
+        self.ln_f = RMSNorm(config.d_model, eps=config.norm_eps)
         self.lm_head = nn.Linear(config.d_model, config.vocab_size, bias=False)
 
         # Weight tying
@@ -42,9 +43,8 @@ class TinyGPT(nn.Module):
                 nn.init.zeros_(module.bias)
         elif isinstance(module, nn.Embedding):
             nn.init.normal_(module.weight, mean=0.0, std=0.02)
-        elif isinstance(module, nn.LayerNorm):
+        elif isinstance(module, RMSNorm):
             nn.init.ones_(module.weight)
-            nn.init.zeros_(module.bias)
 
     def forward(
         self, idx: torch.Tensor, targets: Optional[torch.Tensor] = None
@@ -129,5 +129,6 @@ __all__ = [
     "CausalSelfAttention",
     "FeedForward",
     "TransformerBlock",
+    "RMSNorm",
     "make_batches",
 ]

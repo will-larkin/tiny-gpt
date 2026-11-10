@@ -6,6 +6,7 @@ import torch
 import torch.nn as nn
 
 from tiny_gpt.attention import CausalSelfAttention
+from tiny_gpt.norm import RMSNorm
 from tiny_gpt.config import GPTConfig
 
 
@@ -31,9 +32,9 @@ class TransformerBlock(nn.Module):
 
     def __init__(self, config: GPTConfig) -> None:
         super().__init__()
-        self.ln1 = nn.LayerNorm(config.d_model)
+        self.ln1 = RMSNorm(config.d_model, eps=config.norm_eps)
         self.attn = CausalSelfAttention(config)
-        self.ln2 = nn.LayerNorm(config.d_model)
+        self.ln2 = RMSNorm(config.d_model, eps=config.norm_eps)
         self.mlp = FeedForward(config)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
